@@ -48,11 +48,10 @@ function calc_maxgc_content(fastadict)
     return strip(maxid, '>'), 100*maxgc
 end
 
-
-dna = chomp(readall("../input/puzzle3a.txt"))
+dna = chomp(readall("../data/puzzle3a.txt"))
 dna_complement = complement_dna(dna)
-@printf("\n%-12s%s\n%-12s%s\n\n", "DNA:", dna, "COMPLEMENT:", dna_complement)
+@printf("%-12s%s\n%-12s%s\n\n", "DNA:", dna, "COMPLEMENT:", dna_complement)
 
-fd = get_fastadict("../input/puzzle3b.txt")
-maxid, maxgc = calc_gc_content(fd)
+fd = get_fastadict("../data/puzzle3b.txt")
+maxid, maxgc = calc_maxgc_content(fd)
 @printf("ID:\t%s\nGC:\t%0.2f%%\n\n", maxid, maxgc)
