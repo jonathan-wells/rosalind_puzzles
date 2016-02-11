@@ -59,5 +59,5 @@ function main()
     @printf("ID:\t%s\nGC:\t%0.2f%%\n", maxid, maxgc)
 end
 
-main()
+# main()
 
