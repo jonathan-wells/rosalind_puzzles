@@ -61,12 +61,12 @@ end
 function main()
     # Part 1
     k, m, n = 250, 500, 250
-    println("\nPart 1\n------")
+    println("\nPart 1 - Mendelian Inheritance\n------")
     @printf("Given %d XX, %d Xx and %d xx:\n", k, m, n)
     p = mendelian_inheritance(k, m, n)
     @printf("P(dominant offpsring) = %f\n", p)
     # Part 2
-    println("\nPart 2\n------")
+    println("\nPart 2 - Overlap Graphs\n------")
     fastadict = get_fastadict("../data/rosalind_grph.txt")
     for edge in collect(overlap_graph(fastadict, 3))[1:10]
         @printf("%s\t%s\n", edge[1], edge[2])
