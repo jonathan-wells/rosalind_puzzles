@@ -1,54 +1,24 @@
 #!/usr/bin/env julia
 
-type fib_storage
-   data::Array{BigInt, 1}
-
-   function fib_storage(data=[1, 1])
-       new(data)
-   end
-end
-
-function push_fib!(storage::fib_storage, val::BigInt)
-    push!(storage.data, val)
-end
-
-function set_fib(storage::fib_storage, ind::Int, val::BigInt)
-    storage.data[ind] = val
-end
-
-function get_fib(storage::fib_storage, ind::Int)
-    return storage.data[ind]
-end
-
-function fib_length(storage::fib_storage)
-    return length(storage.data)
-end
-
-function dpfibonacci(storage, month::Int)
-    if month == 1
-        return get_fib(storage, month)
-    elseif month == 2
-        return get_fib(storage, month)
-    elseif fib_length(storage) > month - 2
-        pop = get_fib(storage, month - 1) + get_fib(storage, month - 2)
-        push_fib!(storage, pop)
-        return pop
-    else
-        pop = dpfibonacci(storage, month-1) + dpfibonacci(storage, month-2)
-        push_fib!(storage, pop)
-        return pop
+function dpfibonacci(n, life)
+    life += 1
+    fibmem = [1, 1]
+    for i in 3:n
+        if n <= 2
+            return fibmem[n]
+        elseif i < life
+            push!(fibmem, fibmem[i-1] + fibmem[i-2])
+        elseif i == life
+            push!(fibmem, fibmem[i-1] + fibmem[i-2] - 1)
+        elseif i > life
+            push!(fibmem, fibmem[i-1] + fibmem[i-2] - fibmem[i - life])
+        end
     end
+    return fibmem[n]
 end
 
-function main(n::Int, m::Int)
-    fibstore = fib_storage()
+println(dpfibonacci(6, 3))
+# >>> 4
 
-    for i in 1:n
-        pop = dpfibonacci(fibstore, i)
-        println(pop)
-    end
-    pop = dpfibonacci(fibstore, n)
-    println(pop)
-end
-
-main(10, 3)
+println(dpfibonacci(81, 19))
+# >>> 37773534761266700
