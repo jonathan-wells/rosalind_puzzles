@@ -10,11 +10,11 @@ end
 # Prints permutations, plus information about level in  recursion
 function heaps_debugger(a::Array, n::Int=length(a))
     if n == 1
-        println("a = ", a)
+        println(a)
     else
         for i in 1:n
-            println("n = ", n)
-            println("i = ", i)
+            # println("n = ", n)
+            # println("i = ", i)
             heaps_debugger(a, n-1)
             if n%2 == 0
                 swap!(a, i, n)
@@ -25,7 +25,7 @@ function heaps_debugger(a::Array, n::Int=length(a))
     end
 end
 
-# Utilises generator style function to produce permutations
+# Generator func, yields permutations
 function permutations(a::Array, n::Int=length(a))
     function _heaps(a::Array, n::Int)
         if n == 1
@@ -52,4 +52,4 @@ function printperms(n::Int)
     end
 end
 
-printperms(6)
+heaps_debugger(collect(1:9))
