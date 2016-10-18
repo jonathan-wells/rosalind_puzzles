@@ -32,7 +32,7 @@ def calc_dmatrix(filename):
             dmatrix[i][j] = pdistance(seqs[i], seqs[j])
     return dmatrix
 
-def pretty_print_matrix(filename):
+def prettyprint_dmatrix(filename):
     n, m = dmatrix.shape
     for i in range(n):
         for j in range(n):
@@ -41,4 +41,4 @@ def pretty_print_matrix(filename):
 
 if __name__ == '__main__':
     dmatrix = calc_dmatrix('../data/rosalind_pdst.txt')
-    pretty_print_matrix(dmatrix)
+    prettyprint_dmatrix(dmatrix)
