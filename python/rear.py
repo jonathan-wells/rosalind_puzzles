@@ -1,20 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-from collections import namedtuple
-
-def read_seqpairs(filename):
-    seqpairs = [[]]
-    with open(filename) as infile:
-        pairnum = 0
-        for line in infile:
-            if line == '\n':
-                pairnum += 1
-                seqpairs.append([])
-            else:
-                perm = [int(i) for i in line.strip().split()]
-                seqpairs[pairnum].append(perm)
-    return seqpairs
 
 
 class Permutation(object):
@@ -31,25 +17,112 @@ class Permutation(object):
                 bps += 1
         return bps
 
+    def strip(self, i, j):
+        return self.perm[i:j+1]
+
+    def isincreasing(i, j):
+        permstrip = self.strip(i, j)
+        if max(permstrip) > min(permstrip):
+            return True
+        else:
+            return False
+
+    def bpdiff(self, other):
+        return self.breakpoints - other.breakpoints
+
+    def reversal(self, i, j):
+        return self.perm[:i] + self.perm[i:j+1][::-1] + self.perm[j+1:]
+
+    def __iter__(self):
+        for i in self.perm:
+            yield i
+
+    def __len__(self):
+        return len(self.perm)
+
+    def __repr__(self):
+        return ' '.join([str(i) for i in self.perm])
+
 
 class PermutationPair(object):
-
-    Label = namedtuple('Label', ['val', 'lab'])
-
     def __init__(self, pair):
         assert len(pair[0]) == len(pair[1])
+        self.plen = len(pair[0])
         self.s1, self.s2 = Permutation(pair[0]), Permutation(pair[1])
-        self.sigma, self.tau = self._relabel_seqpair(pair)
-        self.sigma = Permutation([i.lab for i in self.sigma])
-        self.tau = Permutation([i.lab for i in self.tau])
+        self.sigma, self.tau = self._relabel_pair()
+        self.upper, self.lower = self._calc_bounds()
+        self.current_best = self.greedy_dist()
 
-    def _relabel_seqpair(self, pair):
-        pair[0] = [self.Label(val, lab+1) for (lab, val) in enumerate(pair[0])]
-        mapping = dict(pair[0])
-        pair[1] = [self.Label(key, mapping[key]) for key in pair[1]]
-        return pair[0], pair[1]
+    def _relabel_pair(self):
+        mapping = {val: i+1 for (i, val) in enumerate(self.s1)}
+        sigma = Permutation([mapping[val] for val in self.s1])
+        tau = Permutation([mapping[val] for val in self.s2])
+        return sigma, tau
+
+    def _calc_bounds(self):
+        upper = len(self.s1) - 1
+        lower = 2
+        return upper, lower
+
+    def breakpointdiff(self, i, j):
+        perm = Permutation(self.tau.reversal(i, j))
+        return self.tau.bpdiff(perm)
+
+    def greedy_dist(self):
+        distance = 0
+        old_tau = self.tau
+        while self.tau.breakpoints != 0:
+            dmat = np.zeros((self.plen, self.plen), int)
+            best_bpdiff = 0
+            i0, j0 = 0, 0
+            for i in range(self.plen):
+                for j in range(self.plen):
+                    if i >= j:
+                        continue
+                    dmat[i][j] = self.breakpointdiff(i, j)
+                    if dmat[i][j] > best_bpdiff:
+                        best_bpdiff = dmat[i][j]
+                        i0, j0 = i, j
+            self.tau = Permutation(self.tau.reversal(i0, j0))
+            distance += 1
+        self.tau = old_tau
+        return distance
+
+################################################################################
+## Reversal distance algorithms
+################################################################################
+
+def read_seqpairs(filename):
+    seqpairs = [[]]
+    with open(filename) as infile:
+        pairnum = 0
+        for line in infile:
+            if line == '\n':
+                pairnum += 1
+                seqpairs.append([])
+            else:
+                perm = [int(i) for i in line.strip().split()]
+                seqpairs[pairnum].append(perm)
+    return seqpairs
+
+def exact_reversal_distance(seqpair):
+    pair = PermutationPair(seqpair)
+    dmat = np.zeros((pair.plen, pair.plen), int)
+    best = 0
+    i0, j0 = 0, 0
+    for i in range(pair.plen):
+        for j in range(pair.plen):
+            if i >= j:
+                continue
+            dmat[i][j] = pair.breakpointdiff(i, j)
+            if dmat[i][j] > best:
+                best = dmat[i][j]
+                i0, j0 = i, j
+    print(dmat, best, i0, j0)
+
 
 if __name__ == '__main__':
     seqpairs = read_seqpairs('test.txt')
-    pair = PermutationPair(seqpairs[1])
-    print(pair.sigma.breakpoints)
+    for pair in seqpairs:
+        pair = PermutationPair(pair)
+        print(pair.greedy_dist())
