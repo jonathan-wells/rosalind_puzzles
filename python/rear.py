@@ -89,6 +89,27 @@ class PermutationPair(object):
         return distance
 
 ################################################################################
+## Graph structure for DFS
+################################################################################
+
+class Node(object):
+    def __init__(self, name, parent, children=[]):
+        self.name = name
+        self.parent = parent
+        self.children = children
+
+class Graph(object):
+    def __init__(self, nodes=[], edges=[]):
+        self.nodes = nodes
+        self.edges = edges
+
+    def add_node(self, name, parent):
+        node = Node(name, parent)
+        self.nodes.append(name, parent)
+        self.edges.append((name, parent))
+
+
+################################################################################
 ## Reversal distance algorithms
 ################################################################################
 
@@ -106,23 +127,28 @@ def read_seqpairs(filename):
     return seqpairs
 
 def exact_reversal_distance(seqpair):
+    tree = Graph()
     pair = PermutationPair(seqpair)
-    dmat = np.zeros((pair.plen, pair.plen), int)
-    best = 0
+    ubound = pair.current_best
+    best = ubound
+    dmat = np.zeros((pair.plen, pair.plen))
+    best_bpdiff = 0
     i0, j0 = 0, 0
-    for i in range(pair.plen):
-        for j in range(pair.plen):
+    for i in range(self.plen):
+        for j in range(self.plen):
             if i >= j:
                 continue
-            dmat[i][j] = pair.breakpointdiff(i, j)
-            if dmat[i][j] > best:
-                best = dmat[i][j]
-                i0, j0 = i, j
-    print(dmat, best, i0, j0)
+            dmat[i][j] = self.breakpointdiff(i, j)
+            if dmat[i][j] > best_bpdiff:
+                best_bpdiff = dmat[i][j]
+                tree.add_node('', )
+    self.tau = Permutation(self.tau.reversal(i0, j0))
+
+
+
+
 
 
 if __name__ == '__main__':
     seqpairs = read_seqpairs('test.txt')
-    for pair in seqpairs:
-        pair = PermutationPair(pair)
-        print(pair.greedy_dist())
+    exact_reversal_distance(seqpairs[1])
