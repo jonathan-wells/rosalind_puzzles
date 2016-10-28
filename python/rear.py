@@ -150,5 +150,8 @@ def exact_reversal_distance(seqpair):
 
 
 if __name__ == '__main__':
-    seqpairs = read_seqpairs('test.txt')
-    exact_reversal_distance(seqpairs[1])
+    seqpairs = read_seqpairs('rosalind_rear.txt')
+    for seqpair in seqpairs:
+        pair = PermutationPair(seqpair)
+        print(pair.current_best)
+    # exact_reversal_distance(seqpairs[1])
