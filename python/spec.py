@@ -28,7 +28,7 @@ def calc_peptide(spectrum, mi_masses):
     peptide = ''
     for obs in observed_masses:
         # Minimise squared distance between observed and expected mass.
-        mass_errors = {mi_masses[ex]: (obs - ex)**2 for ex in mi_masses}
+        mass_errors = {mi_masses[ex]: abs(obs - ex) for ex in mi_masses}
         peptide += min(mass_errors, key = lambda x: mass_errors[x])
     return peptide
 
