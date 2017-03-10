@@ -35,7 +35,10 @@ def prime_sieve(n):
                 j += val
     primes = [p for p in primes if p]
     print(primes)
+    print(len(primes))
+    print(primes[0])
+    print(primes[10000])
 
 
 if __name__ == '__main__':
-    prime_sieve(29)
+    prime_sieve(1000000)
