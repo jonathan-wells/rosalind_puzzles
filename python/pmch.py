@@ -8,5 +8,6 @@ def perfect_basepair_matchings(seq):
     return factorial(au)*factorial(cg)
 
 if __name__ == '__main__':
-    m = perfect_basepair_matchings('AGCCUAUGACGUUCAUGUCGCGGUGACUCAUGGUUCCAACCAACGGAAUUCUGGCACACCUGCCUAGGAGGG')
+    # m = perfect_basepair_matchings('AGCCUAUGACGUUCAUGUCGCGGUGACUCAUGGUUCCAACCAACGGAAUUCUGGCACACCUGCCUAGGAGGG')
+    m = perfect_basepair_matchings('AUUA')
     print(m)
