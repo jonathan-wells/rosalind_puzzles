@@ -40,10 +40,21 @@ def prime_factor(n=13195):
     factors = set(i for i in factors if isprime(i))
     return factors
 
+class Test(object):
+    def __init__(self):
+        self.length = 10
+
+    def __str__(self):
+        return str(self.length)
+
 if __name__ == '__main__':
-    a = prime_factor(6008514751435678)
-    b = prime_factor(2*4*6*8*3*5)
-    c = prime_factor(17)
+    a = prime_factor(600851475143)
+#     b = prime_factor(2*4*6*8*3*5)
+#     c = prime_factor(17)
     print(a)
-    print(b)
-    print(c)
+#     print(b)
+#     print(c)
+
+    # print('hello')
+    test = Test()
+    print(str(test))

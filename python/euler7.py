@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import euler3
+
 """
 Euler Puzzle 7
 
@@ -8,6 +10,9 @@ that the 6th prime is 13.
 
 What is the 10,001st prime number?
 """
+
+mydict = {'A': 1, 'B': 2}
+print(max(mydict.keys()))
 
 def isprime(x):
     for i in range(2, x):
@@ -41,4 +46,5 @@ def prime_sieve(n):
 
 
 if __name__ == '__main__':
-    prime_sieve(1000000)
+    # prime_sieve(1000000)
+    pass
