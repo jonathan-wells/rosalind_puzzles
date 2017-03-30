@@ -4,8 +4,9 @@
  * the same direction (up, down, left, right, or diagonally)?
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio>
+#include <stdlib>
+#include <fstream>
 
 int *load_array(char filename[50]){
     FILE *file;
@@ -29,50 +30,6 @@ int *load_array(char filename[50]){
 
 int main(int argc, char *argv[]){
     int *arr = load_array("/Users/jonwells/Code/puzzle_club/data/euler11.dat");
-
-    int psize = atoi(argv[1]);
-    int hproducts[20*20 - (psize)];
-    int vproducts[20*20 - (psize)];
-    int dproducts[20*20 - (psize*psize)];
-
-    int i;
-    int j;
-    for (i = 0; i < 20*20 - (psize - 1); ++i) hproducts[i] = 1;
-    for (i = 0; i < 20*20 - (psize - 1); ++i) vproducts[i] = 1;
-    for (i = 0; i < 20*20 - (psize*psize); ++i) dproducts[i] = 1;
-
-    // for (i = 0; i < 20*20 - psize; ++i){
-    //     for (int j = i; j < i + psize; ++j){
-    //         hproducts[i] *= arr[j];
-    //     }
-    // }
-    // for (i = 0; i < 20*20 - psize; ++i){
-    //     for (int j = i; j < i + psize; j = i + 20){
-    //         vproducts[i] *= arr[j];
-    //     }
-    // }
-    for (i = 0; i < 20*20 - psize; ++i){
-        for (int j = i; j < i + psize; j = i + 21){
-            dproducts[i] *= arr[j];
-        }
-    }
-
-    int currmax = 0;
-    // for (i = 0; i < 20*20 - psize; ++i){
-    //     if (hproducts[i] > currmax){
-    //         currmax = hproducts[i];
-    //     }
-    // }
-    // for (i = 0; i < 20*20 - psize; ++i){
-    //     if (vproducts[i] > currmax){
-    //         currmax = vproducts[i];
-    //     }
-    // }
-    for (i = 0; i < 20*20 - psize; ++i){
-        if (dproducts[i] > currmax){
-            currmax = dproducts[i];
-        }
-    }
-    printf("%d", currmax);
+    printf("%d", arr[0]);
     return 0;
 }

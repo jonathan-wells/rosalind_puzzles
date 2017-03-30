@@ -37,7 +37,7 @@ def prime_factor(n=13195):
             factors.append(i)
             curr /= i
     factors.append(int(curr))
-    factors = set(i for i in factors if isprime(i))
+    factors = [i for i in factors if isprime(i)]
     return factors
 
 class Test(object):

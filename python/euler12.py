@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import sys
 
 """
 Problem 12 - Highly divisible triangular number
@@ -68,5 +69,4 @@ def triangle_number_divisors(numdivs):
             factormax = factors
 
 if __name__ == '__main__':
-    print(prime_factors(17))
-    triangle_number_divisors(500)
+    triangle_number_divisors(int(sys.argv[1]))
