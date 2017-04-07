@@ -9,56 +9,38 @@ What is the sum of the digits of the number 2^1000?
 #include <stdlib.h>
 #include <math.h>
 
-// Convert a decimal argument to binary format stored in an array.
-int *dectobin(int n) {
-    int exponent = 0;
-    while (pow(2, exponent) <= n) {
-        ++exponent;
-    }
-    int *bin = malloc((exponent + 1)*sizeof(int));
-    int i = exponent;
-    while (n != 0) {
-        bin[i] = n%2;
-        n = n/2;
-        --i;
-    }
-    bin[i] = exponent;
-    return bin;
-}
-
-// (A*A)modx = ((Amodx)*(Amodx))modx
-int modexponent(int base, int exponent, int mod) {
-    int *bin = dectobin(exponent);
-    int i, j = 0, k = 0;
-    for (i = bin[0]; i > 0; --i) {
-        if (bin[i] == 1) {
-            ++j;
-        }
-    }
-    int parts[j];
-    j = 0;
-    for (i = bin[0]; i > 0; --i) {
-        if (bin[i] == 1) {
-            parts[j] = pow(2, k);
-            ++j;
-        }
-        ++k;
-    }
-    for (i = 0; i < j; ++i) {
-        printf("%d\n", parts[i]);
-    }
-    return 0;
-}
-
-// int digitsum()
-
 int main(int argc, char *argv[]) {
-    if (argc <= 2) {
-        printf("Needs at least 2 arguments");
-        return 0;
+    int exponent = atoi(argv[1]);
+    int ndigits = floor(1 + exponent*log10(2));
+
+    // Initialise array of zeros, last position set to 2**0 = 1.
+    int digits[ndigits];
+    for (int i = 0; i < ndigits; ++i) {
+        digits[i] = 0;
     }
-    // modexponent(atoi(argv[1]), atoi(argv[2]), 9);
-    int x = pow(2, atoi(argv[2]));
-    printf("%d", x);
-    return 0;
+    digits[ndigits - 1] = 1;
+
+    // For each position in array, double value and carry the one if neccesary.
+    int doubled, carry;
+    for (int i = 0; i < exponent; ++i) {
+        for (int j = ndigits - 1; j >= 0; --j) {
+            doubled = 2*digits[j] + carry;
+            carry = 0;
+            if (doubled >= 10) {
+                carry = 1;
+                doubled %= 10;
+            }
+            digits[j] = doubled;
+        }
+    }
+
+    // Print the number and the sum of the digits.
+    int digitsum = 0;
+    printf("2**%d = ", exponent);
+    for (int i = 0; i < ndigits; ++i) {
+        printf("%d", digits[i]);
+        digitsum += digits[i];
+    }
+    printf("\nNumber of digits: %d\n", ndigits);
+    printf("Sum of digits: %d", digitsum);
 }

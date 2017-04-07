@@ -110,7 +110,7 @@ def count_letters(start, stop, step=1):
 
 
 if __name__ == '__main__':
-    # count_letters(1, 1001)
+    count_letters(1, 1001)
     test = WrittenNumbers()
     print(test.getnum(2331))
     # print(test._split_parts(100000))
